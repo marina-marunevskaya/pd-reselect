@@ -26,7 +26,7 @@ const defaultShoppingListsCollection = ({
 };
 
 const mapStateToProps = store => ({
-	items: store.lists
+	items: store.lists.items
 });
 
 export const ShoppingListsCollection = connect(mapStateToProps)(defaultShoppingListsCollection);
