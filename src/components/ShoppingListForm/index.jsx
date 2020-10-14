@@ -1,10 +1,12 @@
 import React, { useCallback, useMemo, useState } from 'react';
 import { connect } from 'react-redux';
 
+import { initListItems } from '../../actions/itemActions';
 import { addList } from '../../actions/listActions';
 
 const defaultShoppingListForm = ({
-	addList
+	addList,
+	initListItems
 }) => {
 	const [hasError, setError] = useState(false);
 	const [name, setName] = useState('');
@@ -29,13 +31,14 @@ const defaultShoppingListForm = ({
 			if (name) {
 				const id = `${Date.now()}-${Math.round(Math.random() * 100)}`;
 				addList(id, name);
+				initListItems(id);
 				setError(false);
 				setName('');
 			} else {
 				setError(true);
 			}
 		},
-		[name, addList]
+		[name, addList, initListItems]
 	);
 
 	return (
@@ -68,7 +71,8 @@ const defaultShoppingListForm = ({
 };
 
 const mapDispatchToProps = {
-	addList
+	addList,
+	initListItems
 };
 
 export const ShoppingListForm = connect(null, mapDispatchToProps)(defaultShoppingListForm);
