@@ -1,9 +1,13 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
+import { Provider } from 'react-redux';
 
-const title = 'React with Webpack and Babel';
+import { App } from './App';
+import { store } from './store';
 
 ReactDOM.render(
-	<h1>{title}</h1>,
+	<Provider store={store}>
+		<App />
+	</Provider>,
 	document.getElementById('app')
 );
