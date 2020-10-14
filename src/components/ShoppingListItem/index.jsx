@@ -11,7 +11,7 @@ export const ShoppingListItem = ({
 			<div className="col font-weight-bold">
 				{name}
 			</div>
-			<div className="col">
+			<div className="col text-md-right text-sm-left">
 				{price}
 			</div>
 		</div>
