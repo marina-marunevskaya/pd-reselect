@@ -1,0 +1,20 @@
+{
+	"name": "pd-reselect",
+	"version": "1.0.0",
+	"description": "",
+	"main": "index.js",
+	"scripts": {
+		"start": "node src/index.js"
+	},
+	"repository": {
+		"type": "git",
+		"url": "git+https://github.com/marina-marunevskaya/pd-reselect.git"
+	},
+	"keywords": [],
+	"author": "",
+	"license": "SEE LICENCE IN LICENSE",
+	"bugs": {
+		"url": "https://github.com/marina-marunevskaya/pd-reselect/issues"
+	},
+	"homepage": "https://github.com/marina-marunevskaya/pd-reselect#readme"
+}
