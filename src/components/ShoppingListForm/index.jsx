@@ -17,10 +17,7 @@ const defaultShoppingListForm = ({
 	const onChange = useCallback(
 		event => {
 			setName(event.target.value);
-
-			if (event.target.value) {
-				setError(false);
-			}
+			setError(false);
 		},
 		[]
 	);
