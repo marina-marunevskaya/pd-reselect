@@ -1,5 +1,6 @@
 import React from 'react';
 
+import { ShoppingListItemForm } from '../ShoppingListItemForm';
 import { ShoppingListItemsCollection } from '../ShoppingListItemsCollection';
 
 export const ShoppingList = ({
@@ -10,6 +11,7 @@ export const ShoppingList = ({
 		<span className="font-weight-bold">
 			{name}
 		</span>
+		<ShoppingListItemForm listId={id} />
 		<ShoppingListItemsCollection listId={id} />
 	</li>
 );
