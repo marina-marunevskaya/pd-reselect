@@ -7,29 +7,29 @@ import {
 import { createReducer } from './createReducer';
 
 const initialState = {
-	lists: []
+	items: []
 };
 
 export const listReducer = createReducer(
 	initialState,
 	{
-		[LIST_ADD]: (state, newList) => ({
+		[LIST_ADD]: (state, newItem) => ({
 			...state,
-			lists: [...state.lists, newList]
+			items: [...state.items, newItem]
 		}),
-		[LIST_UPDATE]: (state, updatedList) => ({
+		[LIST_UPDATE]: (state, updateItem) => ({
 			...state,
-			lists: state.lists.map(
-				list => (
-					list.id === updatedList.id
-						? updatedList
-						: list
+			items: state.items.map(
+				item => (
+					item.id === updateItem.id
+						? updateItem
+						: item
 				)
 			)
 		}),
 		[LIST_DELETE]: (state, { id }) => ({
 			...state,
-			lists: state.lists.filter(list => list.id !== id)
+			items: state.items.filter(item => item.id !== id)
 		})
 	}
 );
