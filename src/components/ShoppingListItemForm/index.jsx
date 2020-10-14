@@ -36,7 +36,7 @@ const defaultShoppingListItemForm = ({
 
 			if (name && pricePattern.test(price)) {
 				const id = `${listId}-${Date.now()}-${Math.round(Math.random() * 100)}`;
-				addItem(id, listId, name, price);
+				addItem(id, listId, name, parseFloat(price));
 				setName('');
 				setPrice(0);
 				setNameError(false);
