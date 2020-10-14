@@ -38,7 +38,7 @@ const defaultShoppingListForm = ({
 				setError(true);
 			}
 		},
-		[name]
+		[name, addList]
 	);
 
 	return (
