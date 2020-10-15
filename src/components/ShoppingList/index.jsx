@@ -8,7 +8,7 @@ export const ShoppingList = ({
 	name
 }) => (
 	<li className="list-group-item">
-		<span className="font-weight-bold text-break">
+		<span className="font-weight-bold py-3 text-break">
 			{name}
 		</span>
 		<ShoppingListItemForm listId={id} />
