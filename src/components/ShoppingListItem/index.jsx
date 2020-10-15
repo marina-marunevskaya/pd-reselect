@@ -1,8 +1,6 @@
 import React from 'react';
 
 export const ShoppingListItem = ({
-	id,
-	listId,
 	name,
 	price
 }) => (
