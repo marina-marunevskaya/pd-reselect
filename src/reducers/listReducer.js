@@ -1,7 +1,5 @@
 import {
-	LIST_ADD,
-	LIST_UPDATE,
-	LIST_DELETE
+	LIST_ADD
 } from '../actions/listActions';
 
 import { createReducer } from './createReducer';
@@ -16,20 +14,6 @@ export const listReducer = createReducer(
 		[LIST_ADD]: (state, newItem) => ({
 			...state,
 			items: [...state.items, newItem]
-		}),
-		[LIST_UPDATE]: (state, updateItem) => ({
-			...state,
-			items: state.items.map(
-				item => (
-					item.id === updateItem.id
-						? updateItem
-						: item
-				)
-			)
-		}),
-		[LIST_DELETE]: (state, { id }) => ({
-			...state,
-			items: state.items.filter(item => item.id !== id)
 		})
 	}
 );
