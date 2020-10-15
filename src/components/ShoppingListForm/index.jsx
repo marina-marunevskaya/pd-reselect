@@ -1,20 +1,19 @@
-import React, { useCallback, useMemo, useState } from 'react';
+import React, { useCallback, useState } from 'react';
 import { connect } from 'react-redux';
 
-import { initListItems } from '../../actions/itemActions';
+import { initItemList } from '../../actions/itemActions';
 import { addList } from '../../actions/listActions';
 
-const defaultShoppingListForm = ({
+const generateListID = () => `${Date.now()}-${Math.round(Math.random() * 100)}`;
+
+const Form = ({
 	addList,
-	initListItems
+	initItemList
 }) => {
 	const [hasError, setError] = useState(false);
 	const [name, setName] = useState('');
 
-	const inputClass = useMemo(
-		() => hasError ? 'form-control is-invalid' : 'form-control',
-		[hasError]
-	);
+	const nameInputClass = hasError ? 'form-control is-invalid' : 'form-control';
 
 	const onChange = useCallback(
 		event => {
@@ -25,54 +24,53 @@ const defaultShoppingListForm = ({
 	);
 
 	const onSubmit = useCallback(
-		(event) => {
+		event => {
 			event.preventDefault();
 
 			if (name) {
-				const id = `${Date.now()}-${Math.round(Math.random() * 100)}`;
-				addList(id, name);
-				initListItems(id);
-				setError(false);
+				const id = generateListID();
+				addList({
+					id,
+					name
+				});
+				initItemList(id);
 				setName('');
+				setError(false);
 			} else {
 				setError(true);
 			}
 		},
-		[name, addList, initListItems]
+		[name, addList, initItemList]
 	);
 
 	return (
-		<div className="row my-4">
-			<div className="col-md-6 mx-auto">
-				<form onSubmit={onSubmit}>
-					<div className="form-group">
-						<label htmlFor="listNameInput">
-							Name
-						</label>
-						<input
-							className={inputClass}
-							id="listNameInput"
-							type="text"
-							onChange={onChange}
-							value={name}
-						/>
-						<p className="invalid-feedback">
-							Enter a list name
-						</p>
-					</div>
-
-					<button className="btn btn-primary" type="submit">
-						Add
-					</button>
-				</form>
+		<form className="sticky-top py-5" onSubmit={onSubmit}>
+			<div className="form-group">
+				<label htmlFor="nameInput">
+					Name
+				</label>
+				<input
+					className={nameInputClass}
+					id="nameInput"
+					onChange={onChange}
+					type="text"
+					value={name}
+				/>
+				<p className="invalid-feedback">
+					Enter a valid name
+				</p>
 			</div>
-		</div>
+
+			<button className="btn btn-primary" type="submit">
+				Add
+			</button>
+		</form>
 	);
 };
 
 const mapDispatchToProps = {
 	addList,
-	initListItems
+	initItemList
 };
 
-export const ShoppingListForm = connect(null, mapDispatchToProps)(defaultShoppingListForm);
+export const ShoppingListForm = connect(null, mapDispatchToProps)(Form);
