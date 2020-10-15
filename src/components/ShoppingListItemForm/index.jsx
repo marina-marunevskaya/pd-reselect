@@ -5,7 +5,9 @@ import { addItem } from '../../actions/itemActions';
 
 const pricePattern = /^\d+(?:\.\d+){0,1}$/;
 
-const defaultShoppingListItemForm = ({
+const generateItemID = listId => `${listId}-${Date.now()}-${Math.round(Math.random() * 100)}`;
+
+const Form = ({
 	addItem,
 	listId
 }) => {
@@ -13,32 +15,42 @@ const defaultShoppingListItemForm = ({
 	const [hasPriceError, setPriceError] = useState(false);
 
 	const [name, setName] = useState('');
-	const [price, setPrice] = useState(0);
+	const [price, setPrice] = useState('0');
 
 	const nameInputClass = hasNameError ? 'form-control is-invalid' : 'form-control';
 	const priceInputClass = hasPriceError ? 'form-control is-invalid' : 'form-control';
 
 	const onChange = useCallback(
 		event => {
-			if (event.target.name === 'name') {
-				setName(event.target.value);
+			const { target: { name, value } } = event;
+
+			if (name === 'name') {
+				setName(value);
 				setNameError(false);
 			} else {
-				setPrice(event.target.value);
+				setPrice(value);
 				setPriceError(false);
 			}
-		}
+		},
+		[]
 	);
 
 	const onSubmit = useCallback(
 		event => {
 			event.preventDefault();
 
-			if (name && pricePattern.test(price)) {
-				const id = `${listId}-${Date.now()}-${Math.round(Math.random() * 100)}`;
-				addItem(id, listId, name, parseFloat(price));
+			const validPrice = pricePattern.test(price)
+
+			if (name && validPrice) {
+				const id = generateItemID(listId);
+				addItem({
+					id,
+					listId,
+					name,
+					price: parseFloat(price)
+				});
 				setName('');
-				setPrice(0);
+				setPrice('0');
 				setNameError(false);
 				setPriceError(false);
 			} else {
@@ -46,57 +58,53 @@ const defaultShoppingListItemForm = ({
 					setNameError(true);
 				}
 
-				if (!pricePattern.test(price)) {
+				if (!validPrice) {
 					setPriceError(true);
 				}
 			}
 		},
-		[listId, name, price, addItem]
+		[name, price, listId, addItem]
 	);
 
 	return (
-		<div className="row my-2">
-			<div className="col-md-8 mx-auto">
-				<form onSubmit={onSubmit}>
-					<div className="form-group">
-						<label htmlFor={`itemNameInput-${listId}`}>
-							Name
-						</label>
-						<input
-							className={nameInputClass}
-							id={`itemNameInput-${listId}`}
-							name="name"
-							type="text"
-							onChange={onChange}
-							value={name}
-						/>
-						<p className="invalid-feedback">
-							Enter an item name
-						</p>
-					</div>
-					<div className="form-group">
-						<label htmlFor={`itemPriceInput-${listId}`}>
-							Price
-						</label>
-						<input
-							className={priceInputClass}
-							id={`itemPriceInput-${listId}`}
-							name="price"
-							type="text"
-							onChange={onChange}
-							value={price}
-						/>
-						<p className="invalid-feedback">
-							Enter a valid price
-						</p>
-					</div>
-
-					<button className="btn btn-primary" type="submit">
-						Add
-					</button>
-				</form>
+		<form className="pt-2 pb-4" onSubmit={onSubmit}>
+			<div className="form-group">
+				<label htmlFor={`nameInput-${listId}`}>
+					Name
+				</label>
+				<input
+					className={nameInputClass}
+					id={`nameInput-${listId}`}
+					name="name"
+					onChange={onChange}
+					type="text"
+					value={name}
+				/>
+				<p className="invalid-feedback">
+					Enter a valid name
+				</p>
 			</div>
-		</div>
+			<div className="form-group">
+				<label htmlFor={`priceInput-${listId}`}>
+					Name
+				</label>
+				<input
+					className={priceInputClass}
+					id={`priceInput-${listId}`}
+					name="price"
+					onChange={onChange}
+					type="text"
+					value={price}
+				/>
+				<p className="invalid-feedback">
+					Enter a valid price
+				</p>
+			</div>
+
+			<button className="btn btn-primary" type="submit">
+				Add
+			</button>
+		</form>
 	);
 };
 
@@ -104,4 +112,4 @@ const mapDispatchToProps = {
 	addItem
 };
 
-export const ShoppingListItemForm = connect(null, mapDispatchToProps)(defaultShoppingListItemForm);
+export const ShoppingListItemForm = connect(null, mapDispatchToProps)(Form);
