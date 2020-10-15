@@ -26,10 +26,10 @@ const defaultShoppingListItemsCollection = ({
 					}
 					<li key={`total-${listId}`} className="list-group-item list-group-item-info">
 						<div className="row">
-							<div className="col font-weight-bold">
+							<div className="col font-weight-bold text-break">
 								Total price
 							</div>
-							<div className="col text-md-right text-sm-left">
+							<div className="col text-md-right text-sm-left text-break">
 								{totalPrice}
 							</div>
 						</div>
@@ -39,7 +39,7 @@ const defaultShoppingListItemsCollection = ({
 		);
 	} else {
 		return (
-			<p className="alert alert-warning" role="alert">
+			<p className="alert alert-warning text-break" role="alert">
 				No shopping list items...
 			</p>
 		);
