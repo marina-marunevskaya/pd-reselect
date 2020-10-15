@@ -1,67 +1,67 @@
 import React from 'react';
 import { connect } from 'react-redux';
-import { createSelector } from 'reselect';
+import { createSelector, createStructuredSelector } from 'reselect';
 
 import { ShoppingListItem } from '../ShoppingListItem';
 
-const defaultShoppingListItemsCollection = ({
+const Collection = ({
 	listId,
 	items,
 	totalPrice
 }) => {
-	if (items.length) {
-		return (
-			<>
-				<ul className="list-group">
-					{
-						items.map(
-							({ id, name, price }) => <ShoppingListItem
-								id={id}
-								key={id}
-								listId={listId}
-								name={name}
-								price={price}
-							/>
-						)
-					}
-					<li key={`total-${listId}`} className="list-group-item list-group-item-info">
-						<div className="row">
-							<div className="col font-weight-bold text-break">
-								Total price
-							</div>
-							<div className="col text-md-right text-sm-left text-break">
-								{totalPrice}
-							</div>
+	const content = items.length
+		? (
+			<ul className="list-group">
+				{
+					items.map(
+						({ id, name, price }) => <ShoppingListItem
+							key={id}
+							name={name}
+							price={price}
+						/>
+					)
+				}
+				<li
+					className="list-group-item list-group-item-info"
+					key={`totalPrice-${listId}`}
+				>
+					<div className="row">
+						<div className="col font-weight-bold text-break">
+							Total price
 						</div>
-					</li>
-				</ul>
-			</>
-		);
-	} else {
-		return (
+						<div className="col text-md-right text-sm-left text-break">
+							{totalPrice}
+						</div>
+					</div>
+				</li>
+			</ul>
+		)
+		: (
 			<p className="alert alert-warning text-break" role="alert">
 				No shopping list items...
 			</p>
 		);
-	}
-};
 
-const getListItems = (store, props) => store.items.items[props.listId];
-const generateCalculateTotalPrice = () => {
-	return createSelector(
-		getListItems,
-		items => items.reduce((total, item) => total + item.price, 0)
+	return (
+		<div className="py-2">
+			{content}
+		</div>
 	);
 };
 
-const generateMapStateToProps = () => {
-	const calculateTotalPrice = generateCalculateTotalPrice();
-	const mapStateToProps = (store, props) => ({
-		items: getListItems(store, props),
-		totalPrice: calculateTotalPrice(store, props)
-	});
+const getShoppingListItems = (store, props) => store.items.items[props.listId];
+const createTotalPriceSelector = () => createSelector(
+	getShoppingListItems,
+	items => items.reduce((total, item) => total + item.price, 0)
+);
 
-	return mapStateToProps;
+const mapStateToProps = () => {
+	const selectTotalPrice = createTotalPriceSelector();
+
+	return createStructuredSelector({
+		items: getShoppingListItems,
+		totalPrice: selectTotalPrice
+	})
 };
 
-export const ShoppingListItemsCollection = connect(generateMapStateToProps)(defaultShoppingListItemsCollection);
+export const ShoppingListItemsCollection = connect(mapStateToProps)(Collection);
