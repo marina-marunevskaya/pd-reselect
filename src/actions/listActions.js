@@ -1,34 +1,14 @@
-export const LIST_ADD = 'LIST_ADD';
-export const LIST_UPDATE = 'LIST_UPDATE';
-export const LIST_DELETE = 'LIST_DELETE';
+import { createFullActionType } from '../utils/createFullActionType';
+
+const NAMESPACE = 'LIST';
+
+const createListFullActionType = createFullActionType(NAMESPACE);
+
+export const LIST_ADD = createListFullActionType('LIST_ADD');
 
 export const addList = (
-	id,
-	name
+	item
 ) => ({
 	type: LIST_ADD,
-	payload: {
-		id,
-		name
-	}
-});
-
-export const updateList = (
-	id,
-	name
-) => ({
-	type: LIST_UPDATE,
-	payload: {
-		id,
-		name
-	}
-});
-
-export const deleteList = (
-	id
-) => ({
-	type: LIST_DELETE,
-	payload: {
-		id
-	}
+	payload: item
 });
