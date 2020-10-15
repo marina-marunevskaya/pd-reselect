@@ -86,7 +86,7 @@ const Form = ({
 			</div>
 			<div className="form-group">
 				<label htmlFor={`priceInput-${listId}`}>
-					Name
+					Price
 				</label>
 				<input
 					className={priceInputClass}
