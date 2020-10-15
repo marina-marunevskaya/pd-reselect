@@ -1,7 +1,7 @@
-export const createReducer = (initialState, reduxerMap) => (state = initialState, action) => {
-	const reducer = reduxerMap[action.type];
+export const createReducer = (initialState, reduxerMap) => (state = initialState, { type, payload }) => {
+	const reducer = reduxerMap[type];
 
 	return reducer
-		? reducer(state, action.payload)
+		? reducer(state, payload)
 		: state;
 };
