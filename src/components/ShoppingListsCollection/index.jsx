@@ -1,32 +1,41 @@
 import React from 'react';
 import { connect } from 'react-redux';
+import { createStructuredSelector } from 'reselect';
 
 import { ShoppingList } from '../ShoppingList';
 
-const defaultShoppingListsCollection = ({
+const Collection = ({
 	items
 }) => {
-	if (items.length) {
-		return (
+	const content = items.length
+		? (
 			<ul className="list-group">
 				{
 					items.map(
-						({ id, name }) => <ShoppingList id={id} key={id} name={name} />
+						({ id, name }) => <ShoppingList key={id} id={id} name={name} />
 					)
 				}
 			</ul>
-		);
-	} else {
-		return (
+		)
+		: (
 			<p className="alert alert-warning" role="alert">
 				No shopping lists...
 			</p>
 		);
-	}
+
+	return (
+		<div className="py-5">
+			{
+				content
+			}
+		</div>
+	);
 };
 
-const mapStateToProps = store => ({
-	items: store.lists.items
+const getShoppingLists = store => store.lists.items;
+
+const mapStateToProps = createStructuredSelector({
+	items: getShoppingLists
 });
 
-export const ShoppingListsCollection = connect(mapStateToProps)(defaultShoppingListsCollection);
+export const ShoppingListsCollection = connect(mapStateToProps)(Collection);
